@@ -26,13 +26,13 @@ ro.opengles.version=196608
 #
 # System props for telephony
 # System prop to turn on CdmaLTEPhone always
-telephony.lteOnCdmaDevice=1
+telephony.lteOnCdmaDevice=0
 
 #
 #snapdragon value add features
 #
 ##fluencetype can be "fluence" or "fluencepro" or "none"
-ro.qc.sdk.audio.fluencetype=none
+ro.qc.sdk.audio.fluencetype=fluence
 persist.audio.fluence.voicecall=true
 persist.audio.fluence.voicerec=false
 persist.audio.fluence.speaker=true
@@ -52,24 +52,23 @@ audio.offload.buffer.size.kb=32
 av.offload.enable=false
 
 #enable dsp gapless mode by default
-audio.offload.gapless.enabled=true
+audio.offload.gapless.enabled=false
 
 # Modem power save enabled
 persist.radio.add_power_save=1
 
 # aDSP sensors
 ro.qualcomm.sensors.qmd=true
-debug.qualcomm.sns.hal=w
-ro.qc.sdk.sensors.gestures=false
+ro.qc.sdk.sensors.gestures=true
 ro.qc.sensors.max_accel_rate=false
 ro.qc.sensors.max_gyro_rate=false
 ro.qc.sensors.max_mag_rate=false
 ro.qualcomm.sensors.pedometer=true
-ro.qualcomm.sensors.pam=false
-ro.qualcomm.sensors.scrn_ortn=false
+ro.qualcomm.sensors.pam=true
+ro.qualcomm.sensors.scrn_ortn=true
 ro.qc.sensors.step_detector=true
 ro.qc.sensors.step_counter=true
 ro.qualcomm.sensors.georv=true
 
 # Start in cdma mode
-ro.telephony.default_network=9
+ro.telephony.default_network=4
