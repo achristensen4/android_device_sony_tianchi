@@ -21,10 +21,6 @@ on init
     write /sys/bus/msm_subsys/devices/subsys2/restart_level "RELATED"
     write /sys/bus/msm_subsys/devices/subsys3/restart_level "RELATED"
 
-    # SONY: Start the TrimArea Daemon
-    class_start sony_ta
-    exec /sbin/wait4tad_static
-
     # create directory for scd
     mkdir /dev/socket/scd 0755 system system
 
@@ -41,7 +37,7 @@ on fs
     mkdir /mnt/idd 0751 sony_idd sony_idd
 
     mount_all fstab.qcom
-    setprop ro.crypto.fuse_sdcard true
+    setprop ro.crypto.fuse_sdcard false
 
     chown sony_idd sony_idd /mnt/idd
     chmod 0751 /mnt/idd
@@ -53,9 +49,6 @@ on fs
 on post-fs
     # Change to socket location on libkeyctrl/suntory for /data encryption
     mkdir /dev/socket/suntory 0755 system system
-
-    exec /system/bin/chargemon
-    write /sys/class/power_supply/battery/discharging_enable_for_shutdown 1
 
 on post-fs-data
     mkdir /data/credmgr 0700 system system
@@ -84,7 +77,6 @@ on post-fs-data
     chmod 0660 /sys/class/leds/torch-light/brightness
 
 on early-boot
-    start ta_qmi_service
     start sct_service
 
 on boot
@@ -126,7 +118,6 @@ service ta_qmi_service /system/bin/ta_qmi_service
 # Secure Config Transfer service
 service sct_service /system/bin/sct_service
     user root
-    disabled
 
 service scd /system/bin/scd
     class main
@@ -167,10 +158,9 @@ service system_monitor /system/bin/system_monitor
     user root
 
 # bugreport is triggered by holding down volume down, volume up and power
-service bugreport /system/bin/dumpstate -d -p -B \
+service bugreport /system/bin/dumpstate -d -p -B
         -o /data/data/com.android.shell/files/bugreports/bugreport
     class main
-    disabled
     oneshot
     keycodes 114 115 116
 
@@ -179,9 +169,3 @@ service mac-update /system/bin/mac-update
     class main
     user wifi
     oneshot
-
-on property:init.svc.bootanim=running
-    # Clear Sony boot splash
-    write /sys/class/graphics/fb0/blank 1
-    write /sys/class/graphics/fb0/blank 0
-
